@@ -25690,3 +25690,22 @@ page-home #map {
   width: 100%;
   height: 70%;
 }
+
+page-home td {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+page-manager .scroll {
+  height: 100%;
+}
+
+page-manager #map {
+  width: 100%;
+  height: 70%;
+}
+
+page-manager td {
+  padding-left: 15px;
+  padding-right: 15px;
+}

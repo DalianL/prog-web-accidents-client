@@ -103,9 +103,8 @@ export class HomePage {
 
   sendComment(newCom: any) {
     if (newCom.value != '' && this.selectedAccidentID != undefined) {
-      this.addComment(this.selectedAccidentID, newCom.value, 'User');
       this.commentsArray.push(newCom.value);
-
+      this.addComment(this.selectedAccidentID, newCom.value, 'User');
     } else {
       console.log('Invalid input');
     }

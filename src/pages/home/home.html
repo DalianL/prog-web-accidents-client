@@ -10,9 +10,9 @@
   <h6>Comment list</h6>
 
   <div id="comments">
-    <ul *ngFor="let c of commentsArray">
-      <li>{{c}}</li>
-    </ul>
+    <tr *ngFor="let c of commentsArray">
+      <td>&#8226; {{c}}</td>
+    </tr>
   </div>
 
   <ion-item>

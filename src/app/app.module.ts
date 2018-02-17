@@ -6,8 +6,10 @@ import { MyApp } from './app.component';
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
+import { ManagerPage } from '../pages/homeManager/homeManager';
 import { Login } from '../pages/login/login';
 import { TabsPage } from '../pages/tabs/tabs';
+import { TabsManager } from '../pages/tabsManager/tabsManager';
 
 import { RestProvider } from '../providers/rest/rest';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -23,7 +25,9 @@ import { HttpClient } from '@angular/common/http';
     AboutPage,
     ContactPage,
     HomePage,
+    ManagerPage,
     TabsPage,
+    TabsManager,
     Login
   ],
   imports: [
@@ -38,7 +42,9 @@ import { HttpClient } from '@angular/common/http';
     AboutPage,
     ContactPage,
     HomePage,
+    ManagerPage,
     TabsPage,
+    TabsManager,
     Login
   ],
   providers: [
