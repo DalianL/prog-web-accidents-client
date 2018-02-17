@@ -104,19 +104,8 @@ export class HomePage {
   sendComment(newCom: any) {
     if (newCom.value != '' && this.selectedAccidentID != undefined) {
       this.addComment(this.selectedAccidentID, newCom.value, 'User');
+      this.commentsArray.push(newCom.value);
 
-      setTimeout(() => {
-        // If addComment returns the right comments, update them here
-        // console.log(this.updatedComments);
-        // Temporary workaround
-        this.getComments(this.selectedAccidentID);
-  
-        setTimeout(() => {
-          if (this.comments != undefined) {
-            this.commentsArray.push(this.comments.result[this.comments.result.length - 1].text);
-          }
-        }, this.timeoutValue);
-      }, this.timeoutValue);
     } else {
       console.log('Invalid input');
     }
