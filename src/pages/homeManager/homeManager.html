@@ -10,9 +10,9 @@
   <h6>Comment list</h6>
 
   <div id="comments">
-    <tr *ngFor="let c of commentsArray">
-      <td>&#8226; {{c}}</td>
-      <td class="managerDel"><button class="delete">X</button></td>
+    <tr *ngFor="let c of commentsArray; let i = index">
+      <td>&#x25cf; {{c}}</td>
+      <td class="managerDel"><button ion-button small color="secondary" class="delete" (click)="deleteComment(i)">X</button></td>
     </tr>
   </div>
 

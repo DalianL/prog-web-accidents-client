@@ -25692,6 +25692,8 @@ page-home #map {
 }
 
 page-home td {
+  padding-top: 2px;
+  padding-bottom: 2px;
   padding-left: 15px;
   padding-right: 15px;
 }
@@ -25706,6 +25708,13 @@ page-manager #map {
 }
 
 page-manager td {
+  padding-top: 2px;
+  padding-bottom: 2px;
   padding-left: 15px;
   padding-right: 15px;
+}
+
+page-manager .delete {
+  height: 100%;
+  width: 80%;
 }

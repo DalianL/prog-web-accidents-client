@@ -270,7 +270,7 @@ var HomePage = (function () {
     ], HomePage.prototype, "mapElement", void 0);
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\home\home.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>Accidents around you :</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n  <div #map id="map"></div> \n\n\n\n  <h6>Comment list</h6>\n\n\n\n  <div id="comments">\n\n    <tr *ngFor="let c of commentsArray">\n\n      <td>&#8226; {{c}}</td>\n\n    </tr>\n\n  </div>\n\n\n\n  <ion-item>\n\n    <ion-label>New comment :</ion-label>\n\n    <ion-input type="text" #newCom></ion-input>\n\n  </ion-item>\n\n\n\n  <ion-buttons end>\n\n    <button ion-button color="primary" (click)="sendComment(newCom)">Send comment</button>\n\n    <button ion-button color="primary" (click)="logout()">Logout</button>\n\n  </ion-buttons>\n\n\n\n  <!-- <ion-list>\n\n    <ion-item *ngFor="let a of accidents | slice:0:3">\n\n      <h2>{{a}}</h2>\n\n    </ion-item>\n\n  </ion-list> -->\n\n</ion-content>'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\home\home.html"*/
+            selector: 'page-home',template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\home\home.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>Accidents around you :</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n  <div #map id="map"></div> \n\n\n\n  <h6>Comment list</h6>\n\n\n\n  <div id="comments">\n\n    <tr *ngFor="let c of commentsArray">\n\n      <td>&#x25cf; {{c}}</td>\n\n    </tr>\n\n  </div>\n\n\n\n  <ion-item>\n\n    <ion-label>New comment :</ion-label>\n\n    <ion-input type="text" #newCom></ion-input>\n\n  </ion-item>\n\n\n\n  <ion-buttons end>\n\n    <button ion-button color="primary" (click)="sendComment(newCom)">Send comment</button>\n\n    <button ion-button color="primary" (click)="logout()">Logout</button>\n\n  </ion-buttons>\n\n\n\n  <!-- <ion-list>\n\n    <ion-item *ngFor="let a of accidents | slice:0:3">\n\n      <h2>{{a}}</h2>\n\n    </ion-item>\n\n  </ion-list> -->\n\n</ion-content>'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\home\home.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* App */]])
     ], HomePage);
@@ -387,6 +387,7 @@ var ManagerPage = (function () {
                         marker.addListener('click', function () {
                             _this.selectedAccidentID = element.accidentId;
                             _this.commentsArray = [];
+                            _this.commentsId = [];
                             _this.infoWindows.forEach(function (window) {
                                 window.close();
                             });
@@ -395,6 +396,7 @@ var ManagerPage = (function () {
                             setTimeout(function () {
                                 if (_this.comments != undefined) {
                                     _this.comments.result.forEach(function (element) {
+                                        _this.commentsId.push(element._id);
                                         _this.commentsArray.push(element.text);
                                     });
                                 }
@@ -420,6 +422,14 @@ var ManagerPage = (function () {
             console.log('Invalid input');
         }
         newCom.clearTextInput();
+    };
+    ManagerPage.prototype.deleteComment = function (index) {
+        var _this = this;
+        var idToRemove = this.commentsId[index];
+        this.commentsArray.splice(index, 1);
+        this.rest.deleteComment(idToRemove, this.selectedAccidentID)
+            .subscribe(function (updatedComments) { return _this.updatedComments = updatedComments; }, function (error) { return _this.errorMessage = error; });
+        ;
     };
     ManagerPage.prototype.getAccidents = function (coords) {
         var _this = this;
@@ -447,7 +457,7 @@ var ManagerPage = (function () {
     ], ManagerPage.prototype, "mapElement", void 0);
     ManagerPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-manager',template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\homeManager\homeManager.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>Manage the accidents :</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <div #map id="map"></div> \n\n  <h6>Comment list</h6>\n\n  <div id="comments">\n    <tr *ngFor="let c of commentsArray">\n      <td>&#8226; {{c}}</td>\n      <td class="managerDel"><button class="delete">X</button></td>\n    </tr>\n  </div>\n\n  <ion-item>\n    <ion-label>New comment :</ion-label>\n    <ion-input type="text" #newCom></ion-input>\n  </ion-item>\n\n  <ion-buttons end>\n    <button ion-button color="primary" (click)="sendComment(newCom)">Send comment</button>\n    <button ion-button color="primary" (click)="logout()">Logout</button>\n  </ion-buttons>\n\n  <!-- <ion-list>\n    <ion-item *ngFor="let a of accidents | slice:0:3">\n      <h2>{{a}}</h2>\n    </ion-item>\n  </ion-list> -->\n</ion-content>'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\homeManager\homeManager.html"*/
+            selector: 'page-manager',template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\homeManager\homeManager.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>Manage the accidents :</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <div #map id="map"></div> \n\n  <h6>Comment list</h6>\n\n  <div id="comments">\n    <tr *ngFor="let c of commentsArray; let i = index">\n      <td>&#x25cf; {{c}}</td>\n      <td class="managerDel"><button ion-button small color="secondary" class="delete" (click)="deleteComment(i)">X</button></td>\n    </tr>\n  </div>\n\n  <ion-item>\n    <ion-label>New comment :</ion-label>\n    <ion-input type="text" #newCom></ion-input>\n  </ion-item>\n\n  <ion-buttons end>\n    <button ion-button color="primary" (click)="sendComment(newCom)">Send comment</button>\n    <button ion-button color="primary" (click)="logout()">Logout</button>\n  </ion-buttons>\n\n  <!-- <ion-list>\n    <ion-item *ngFor="let a of accidents | slice:0:3">\n      <h2>{{a}}</h2>\n    </ion-item>\n  </ion-list> -->\n</ion-content>'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\homeManager\homeManager.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* App */]])
     ], ManagerPage);
@@ -742,6 +752,12 @@ var RestProvider = (function () {
         console.log(this.apiUrl3);
         return this.http.get(this.apiUrl3)
             .map(this.extractData)
+            .catch(this.handleError);
+    };
+    RestProvider.prototype.deleteComment = function (comId, accId) {
+        this.apiUrl4 = 'http://localhost:8000/deleteCommentary?id=' + comId + '&accidentId=' + accId;
+        console.log(this.apiUrl4);
+        return this.http.delete(this.apiUrl4)
             .catch(this.handleError);
     };
     RestProvider.prototype.extractData = function (res) {

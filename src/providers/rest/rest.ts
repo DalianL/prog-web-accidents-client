@@ -17,6 +17,7 @@ export class RestProvider {
   private apiUrl1;
   private apiUrl2;
   private apiUrl3;
+  private apiUrl4;
 
   constructor(public http: HttpClient) {
     console.log('Hello RestProvider Provider');
@@ -43,6 +44,13 @@ export class RestProvider {
     console.log(this.apiUrl3);
     return this.http.get(this.apiUrl3)
                     .map(this.extractData)
+                    .catch(this.handleError);
+  }
+
+  deleteComment(comId: any, accId: any) {
+    this.apiUrl4 = 'http://localhost:8000/deleteCommentary?id=' + comId + '&accidentId=' + accId;
+    console.log(this.apiUrl4);
+    return this.http.delete(this.apiUrl4)
                     .catch(this.handleError);
   }
 

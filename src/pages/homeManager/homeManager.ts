@@ -20,6 +20,7 @@ export class ManagerPage {
   comments: any;
   updatedComments: any;
   commentsArray: any[];
+  commentsId: any[];
   errorMessage: string;
   timeoutValue: number = 3000;
 
@@ -72,6 +73,7 @@ export class ManagerPage {
             marker.addListener('click', () => {
               this.selectedAccidentID = element.accidentId;
               this.commentsArray = [];              
+              this.commentsId = [];
               this.infoWindows.forEach(window => {
                 window.close();
               });
@@ -81,6 +83,7 @@ export class ManagerPage {
               setTimeout(() => {
                 if (this.comments != undefined) {
                   this.comments.result.forEach(element => {
+                    this.commentsId.push(element._id);
                     this.commentsArray.push(element.text);
                   });
                 }
@@ -109,6 +112,15 @@ export class ManagerPage {
       console.log('Invalid input');
     }
     newCom.clearTextInput();
+  }
+
+  deleteComment(index: number) {
+    const idToRemove = this.commentsId[index];
+    this.commentsArray.splice(index, 1);
+    this.rest.deleteComment(idToRemove, this.selectedAccidentID)
+    .subscribe(
+      updatedComments => this.updatedComments = updatedComments,
+      error => this.errorMessage = <any>error);;
   }
 
   getAccidents(coords: any) {
