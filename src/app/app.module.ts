@@ -14,6 +14,7 @@ import { TabsManager } from '../pages/tabsManager/tabsManager';
 
 import { RestProvider } from '../providers/rest/rest';
 import { Geolocation } from '@ionic-native/geolocation';
+import { Toast } from '@ionic-native/toast';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HttpModule } from '@angular/http';
@@ -53,6 +54,7 @@ import { HttpClient } from '@angular/common/http';
   providers: [
     StatusBar,
     SplashScreen,
+    Toast,
     RestProvider,
     Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler}

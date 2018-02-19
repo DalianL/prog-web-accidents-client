@@ -25682,6 +25682,10 @@ page-about {
   text-align: center;
 }
 
+page-add {
+  text-align: center;
+}
+
 page-home .scroll {
   height: 100%;
 }
@@ -25717,4 +25721,8 @@ page-manager td {
 page-manager .delete {
   height: 100%;
   width: 80%;
+}
+
+page-manager .send {
+  display: none;
 }

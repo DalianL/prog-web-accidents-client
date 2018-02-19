@@ -40,6 +40,9 @@
 		170E543292764F6995B2EBFE /* CDVIonicKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 55CB12FBC41E46569B01FFAF /* CDVIonicKeyboard.m */; };
 		5401644EE30A44D39FA73A8E /* CDVLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = E1ADE6EE311B44168D80F9E9 /* CDVLocation.m */; };
 		F2DA5C2E74EC45C6A8F980C7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD67F47FDD464123B68C090C /* CoreLocation.framework */; };
+		CA4B15BFA1FB4D39A16C929C /* Toast+UIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E83235F0B214495ADD39AEB /* Toast+UIView.m */; };
+		A74E72969F98496CBDEA7593 /* Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 2692100929D444F991C769BB /* Toast.m */; };
+		6B345AD0C15E494DB57ED2E0 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E844E3795E1C4C99B126560D /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -127,6 +130,11 @@
 		E1ADE6EE311B44168D80F9E9 /* CDVLocation.m */ = {isa = PBXFileReference; name = "CDVLocation.m"; path = "cordova-plugin-geolocation/CDVLocation.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
 		6BB30D4CA2E248D091803A1D /* CDVLocation.h */ = {isa = PBXFileReference; name = "CDVLocation.h"; path = "cordova-plugin-geolocation/CDVLocation.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 		CD67F47FDD464123B68C090C /* CoreLocation.framework */ = {isa = PBXFileReference; name = "CoreLocation.framework"; path = "System/Library/Frameworks/CoreLocation.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		0E83235F0B214495ADD39AEB /* Toast+UIView.m */ = {isa = PBXFileReference; name = "Toast+UIView.m"; path = "cordova-plugin-x-toast/Toast+UIView.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		2692100929D444F991C769BB /* Toast.m */ = {isa = PBXFileReference; name = "Toast.m"; path = "cordova-plugin-x-toast/Toast.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		A598C44929324B21B064F3FD /* Toast+UIView.h */ = {isa = PBXFileReference; name = "Toast+UIView.h"; path = "cordova-plugin-x-toast/Toast+UIView.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		7CE6CF8180E04BB58EEF02D8 /* Toast.h */ = {isa = PBXFileReference; name = "Toast.h"; path = "cordova-plugin-x-toast/Toast.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		E844E3795E1C4C99B126560D /* QuartzCore.framework */ = {isa = PBXFileReference; name = "QuartzCore.framework"; path = "System/Library/Frameworks/QuartzCore.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +146,7 @@
 				BD0B74FC65324F6EA809628E /* libz.tbd in Frameworks */,
 				0DBB9AE1D4AE4C18899CD4C4 /* WebKit.framework in Frameworks */,
 				F2DA5C2E74EC45C6A8F980C7 /* CoreLocation.framework in Frameworks */,
+				6B345AD0C15E494DB57ED2E0 /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -211,6 +220,7 @@
 				CF6DF1C418FF42A185142774 /* libz.tbd */,
 				444F1188D7AF4B64914B1739 /* WebKit.framework */,
 				CD67F47FDD464123B68C090C /* CoreLocation.framework */,
+				E844E3795E1C4C99B126560D /* QuartzCore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -280,6 +290,10 @@
 				5BBDF1949919420CBF0582FA /* CDVIonicKeyboard.h */,
 				E1ADE6EE311B44168D80F9E9 /* CDVLocation.m */,
 				6BB30D4CA2E248D091803A1D /* CDVLocation.h */,
+				0E83235F0B214495ADD39AEB /* Toast+UIView.m */,
+				2692100929D444F991C769BB /* Toast.m */,
+				A598C44929324B21B064F3FD /* Toast+UIView.h */,
+				7CE6CF8180E04BB58EEF02D8 /* Toast.h */,
 			);
 			name = Plugins;
 			path = "ionic-angular4-client/Plugins";
@@ -413,6 +427,8 @@
 				15DE73FD30B441EF92B15B86 /* GCDWebServerStreamedResponse.m in Sources */,
 				170E543292764F6995B2EBFE /* CDVIonicKeyboard.m in Sources */,
 				5401644EE30A44D39FA73A8E /* CDVLocation.m in Sources */,
+				CA4B15BFA1FB4D39A16C929C /* Toast+UIView.m in Sources */,
+				A74E72969F98496CBDEA7593 /* Toast.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

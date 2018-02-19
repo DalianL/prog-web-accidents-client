@@ -22,6 +22,7 @@ export class ManagerPage {
   commentsArray: any[];
   commentsId: any[];
   errorMessage: string;
+  warned: any;
   checkInterval: number = 200;
 
   constructor(public navCtrl: NavController, public rest: RestProvider, public geolocation: Geolocation, public app: App) {
@@ -37,74 +38,98 @@ export class ManagerPage {
   loadMap(){
  
     this.geolocation.getCurrentPosition().then((position) => {
+
+      let latPos = position.coords.latitude;
+      let lngPos = position.coords.longitude;
  
-      let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      let latLng = new google.maps.LatLng(latPos, lngPos);
       // let latLng = new google.maps.LatLng(43.6157998, 7.0724383);
  
       let mapOptions = {
         center: latLng,
-        zoom: 14,
+        zoom: 15,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       }
  
       this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
 
-      this.getAccidents([position.coords.latitude, position.coords.longitude]);
-      // this.getAccidents([43.6157998, 7.0724383]);
+      this.loadAccidents(latPos, lngPos);
 
-      const interval1 = setInterval(() => {
-        if (this.accidents != undefined) {
-          // console.log("Accidents loaded");
-          // alert("ACCIDENT ZONE DETECTED\nBe careful !");
-          clearInterval(interval1);
-
-          this.accidents.result.forEach(element => {
-            let markerCoords = {
-              lat: parseFloat(element.lat),
-              lng: parseFloat(element.lon)
-            };
-  
-            var infowindow = new google.maps.InfoWindow({
-              content: element.adresse
-            });
-
-            this.infoWindows.push(infowindow);
-  
-            let marker = new google.maps.Marker({
-              position: markerCoords,
-              title: "Accident"
-            });
-  
-            marker.addListener('click', () => {
-              this.selectedAccidentID = element.accidentId;
-              this.commentsArray = [];
-              this.commentsId = [];
-              this.infoWindows.forEach(window => {
-                window.close();
-              });
-              infowindow.open(this.map, marker);
-              this.getComments(element.accidentId);
-
-              const interval2 = setInterval(() => {
-                if (this.comments != undefined) {
-                  // console.log("Comments loaded");
-                  clearInterval(interval2);
-                  this.comments.result.forEach(element => {
-                    this.commentsArray.push(element.text);
-                    this.commentsId.push(element._id);
-                  });
-                }
-              }, this.checkInterval);
-            });
-  
-            marker.setMap(this.map);
-            
-          });
-        }
-      }, this.checkInterval);
     }, (err) => {
       console.log(err);
     });
+  }
+
+  loadAccidents(latPos: any, lngPos: any) {
+    this.getAccidents([latPos, lngPos]);
+    // this.getAccidents([43.6157998, 7.0724383]);
+
+    const interval1 = setInterval(() => {
+      if (this.accidents != undefined) {
+        if (this.warned == undefined) {
+          if ((<any>window).cordova) {
+            // this.toast.show(`I'm a toast`, '5000', 'center').subscribe(
+            //   toast => {
+            //     console.log(toast);
+            //   }
+            // );
+          } else {
+            alert("ACCIDENT ZONE DETECTED\nBe careful !");
+          }
+          this.warned = true;
+        }
+
+        clearInterval(interval1);
+
+        this.accidents.result.forEach(element => {
+          let markerCoords = {
+            lat: parseFloat(element.lat),
+            lng: parseFloat(element.lon)
+          };
+
+          var infowindow = new google.maps.InfoWindow({
+            content: element.adresse
+          });
+
+          this.infoWindows.push(infowindow);
+
+          let marker = new google.maps.Marker({
+            position: markerCoords,
+            title: "Accident"
+          });
+
+          marker.addListener('click', () => {
+            this.selectedAccidentID = element.accidentId;
+            this.commentsArray = [];
+            this.commentsId = [];
+            this.infoWindows.forEach(window => {
+              window.close();
+            });
+            infowindow.open(this.map, marker);
+            this.getComments(element.accidentId);
+
+            let elemList = <any>document.querySelectorAll(".accDefined");
+            elemList.forEach(element => {
+              element.style.display = 'block';
+            });
+
+            const interval2 = setInterval(() => {
+              if (this.comments != undefined) {
+                // console.log("Comments loaded");
+                clearInterval(interval2);
+                this.comments.result.forEach(element => {
+                  this.commentsArray.push(element.text);
+                  this.commentsId.push(element._id);
+                });
+              }
+            }, this.checkInterval);
+          });
+
+          marker.setMap(this.map);
+          
+        });
+      }
+    }, this.checkInterval);
   }
 
   sendComment(newCom: any) {

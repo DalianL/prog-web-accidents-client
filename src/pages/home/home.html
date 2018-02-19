@@ -7,7 +7,7 @@
 <ion-content padding>
   <div #map id="map"></div> 
 
-  <h6>Comment list</h6>
+  <h6 class="accDefined">Comment list</h6>
 
   <div id="comments">
     <tr *ngFor="let c of commentsArray">
@@ -15,15 +15,15 @@
     </tr>
   </div>
 
-  <ion-item>
+  <ion-item class="accDefined">
     <ion-label>New comment :</ion-label>
     <ion-input type="text" #newCom></ion-input>
   </ion-item>
 
-  <ion-buttons end>
+  <ion-buttons class="accDefined" end>
     <button ion-button color="primary" (click)="sendComment(newCom)">Send comment</button>
   </ion-buttons>
-  <ion-buttons end>
+  <ion-buttons class="bottom" end>
     <button ion-button color="primary" (click)="logout()">Logout</button>
   </ion-buttons>
 
