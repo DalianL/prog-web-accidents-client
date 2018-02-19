@@ -133,7 +133,7 @@ var TabsPage = (function () {
         this.tab3Root = __WEBPACK_IMPORTED_MODULE_2__contact_contact__["a" /* ContactPage */];
     }
     TabsPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\tabs\tabs.html"*/'<ion-tabs>\n  <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab>\n  <ion-tab [root]="tab2Root" tabTitle="About" tabIcon="information-circle"></ion-tab>\n  <ion-tab [root]="tab3Root" tabTitle="Contact" tabIcon="contacts"></ion-tab>\n</ion-tabs>\n'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\tabs\tabs.html"*/
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\tabs\tabs.html"*/'<ion-tabs>\n\n  <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab>\n\n  <ion-tab [root]="tab2Root" tabTitle="About" tabIcon="information-circle"></ion-tab>\n\n  <ion-tab [root]="tab3Root" tabTitle="Contact" tabIcon="contacts"></ion-tab>\n\n</ion-tabs>\n\n'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\tabs\tabs.html"*/
         }),
         __metadata("design:paramtypes", [])
     ], TabsPage);
@@ -172,7 +172,7 @@ var HomePage = (function () {
         this.rest = rest;
         this.geolocation = geolocation;
         this.app = app;
-        this.timeoutValue = 3000;
+        this.checkInterval = 200;
     }
     HomePage.prototype.ionViewDidLoad = function () {
         this.infoWindows = [];
@@ -183,17 +183,19 @@ var HomePage = (function () {
         var _this = this;
         this.geolocation.getCurrentPosition().then(function (position) {
             var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            _this.getAccidents([position.coords.latitude, position.coords.longitude]);
             // let latLng = new google.maps.LatLng(43.6157998, 7.0724383);
-            // this.getAccidents([43.6157998, 7.0724383]);
             var mapOptions = {
                 center: latLng,
                 zoom: 13,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             _this.map = new google.maps.Map(_this.mapElement.nativeElement, mapOptions);
-            setTimeout(function () {
+            _this.getAccidents([position.coords.latitude, position.coords.longitude]);
+            // this.getAccidents([43.6157998, 7.0724383]);
+            var interval1 = setInterval(function () {
                 if (_this.accidents != undefined) {
+                    // console.log("Accidents loaded");
+                    clearInterval(interval1);
                     _this.accidents.result.forEach(function (element) {
                         var markerCoords = {
                             lat: parseFloat(element.lat),
@@ -215,21 +217,20 @@ var HomePage = (function () {
                             });
                             infowindow.open(_this.map, marker);
                             _this.getComments(element.accidentId);
-                            setTimeout(function () {
+                            var interval2 = setInterval(function () {
                                 if (_this.comments != undefined) {
+                                    // console.log("Comments loaded");
+                                    clearInterval(interval2);
                                     _this.comments.result.forEach(function (element) {
                                         _this.commentsArray.push(element.text);
                                     });
                                 }
-                            }, _this.timeoutValue);
+                            }, _this.checkInterval);
                         });
                         marker.setMap(_this.map);
                     });
                 }
-                else {
-                    console.log('Accidents were not found quick enough');
-                }
-            }, _this.timeoutValue);
+            }, _this.checkInterval);
         }, function (err) {
             console.log(err);
         });
@@ -310,7 +311,7 @@ var TabsManager = (function () {
         this.tab3Root = __WEBPACK_IMPORTED_MODULE_2__contact_contact__["a" /* ContactPage */];
     }
     TabsManager = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\tabsManager\tabsManager.html"*/'<ion-tabs>\n  <ion-tab [root]="tab1Root" tabTitle="Manage" tabIcon="home"></ion-tab>\n  <ion-tab [root]="tab2Root" tabTitle="About" tabIcon="information-circle"></ion-tab>\n  <ion-tab [root]="tab3Root" tabTitle="Contact" tabIcon="contacts"></ion-tab>\n</ion-tabs>\n'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\tabsManager\tabsManager.html"*/
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\tabsManager\tabsManager.html"*/'<ion-tabs>\n\n  <ion-tab [root]="tab1Root" tabTitle="Manage" tabIcon="home"></ion-tab>\n\n  <ion-tab [root]="tab2Root" tabTitle="About" tabIcon="information-circle"></ion-tab>\n\n  <ion-tab [root]="tab3Root" tabTitle="Contact" tabIcon="contacts"></ion-tab>\n\n</ion-tabs>\n\n'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\tabsManager\tabsManager.html"*/
         }),
         __metadata("design:paramtypes", [])
     ], TabsManager);
@@ -349,7 +350,7 @@ var ManagerPage = (function () {
         this.rest = rest;
         this.geolocation = geolocation;
         this.app = app;
-        this.timeoutValue = 3000;
+        this.checkInterval = 200;
     }
     ManagerPage.prototype.ionViewDidLoad = function () {
         this.infoWindows = [];
@@ -360,17 +361,19 @@ var ManagerPage = (function () {
         var _this = this;
         this.geolocation.getCurrentPosition().then(function (position) {
             var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            _this.getAccidents([position.coords.latitude, position.coords.longitude]);
             // let latLng = new google.maps.LatLng(43.6157998, 7.0724383);
-            // this.getAccidents([43.6157998, 7.0724383]);
             var mapOptions = {
                 center: latLng,
                 zoom: 13,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             _this.map = new google.maps.Map(_this.mapElement.nativeElement, mapOptions);
-            setTimeout(function () {
+            _this.getAccidents([position.coords.latitude, position.coords.longitude]);
+            // this.getAccidents([43.6157998, 7.0724383]);
+            var interval1 = setInterval(function () {
                 if (_this.accidents != undefined) {
+                    console.log("Accidents loaded");
+                    clearInterval(interval1);
                     _this.accidents.result.forEach(function (element) {
                         var markerCoords = {
                             lat: parseFloat(element.lat),
@@ -393,22 +396,21 @@ var ManagerPage = (function () {
                             });
                             infowindow.open(_this.map, marker);
                             _this.getComments(element.accidentId);
-                            setTimeout(function () {
+                            var interval2 = setInterval(function () {
                                 if (_this.comments != undefined) {
+                                    // console.log("Comments loaded");
+                                    clearInterval(interval2);
                                     _this.comments.result.forEach(function (element) {
-                                        _this.commentsId.push(element._id);
                                         _this.commentsArray.push(element.text);
+                                        _this.commentsId.push(element._id);
                                     });
                                 }
-                            }, _this.timeoutValue);
+                            }, _this.checkInterval);
                         });
                         marker.setMap(_this.map);
                     });
                 }
-                else {
-                    console.log('Accidents were not found quick enough');
-                }
-            }, _this.timeoutValue);
+            }, _this.checkInterval);
         }, function (err) {
             console.log(err);
         });
@@ -457,7 +459,7 @@ var ManagerPage = (function () {
     ], ManagerPage.prototype, "mapElement", void 0);
     ManagerPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-manager',template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\homeManager\homeManager.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>Manage the accidents :</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <div #map id="map"></div> \n\n  <h6>Comment list</h6>\n\n  <div id="comments">\n    <tr *ngFor="let c of commentsArray; let i = index">\n      <td>&#x25cf; {{c}}</td>\n      <td class="managerDel"><button ion-button small color="secondary" class="delete" (click)="deleteComment(i)">X</button></td>\n    </tr>\n  </div>\n\n  <ion-item>\n    <ion-label>New comment :</ion-label>\n    <ion-input type="text" #newCom></ion-input>\n  </ion-item>\n\n  <ion-buttons end>\n    <button ion-button color="primary" (click)="sendComment(newCom)">Send comment</button>\n    <button ion-button color="primary" (click)="logout()">Logout</button>\n  </ion-buttons>\n\n  <!-- <ion-list>\n    <ion-item *ngFor="let a of accidents | slice:0:3">\n      <h2>{{a}}</h2>\n    </ion-item>\n  </ion-list> -->\n</ion-content>'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\homeManager\homeManager.html"*/
+            selector: 'page-manager',template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\homeManager\homeManager.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>Manage the accidents :</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n  <div #map id="map"></div> \n\n\n\n  <h6>Comment list</h6>\n\n\n\n  <div id="comments">\n\n    <tr *ngFor="let c of commentsArray; let i = index">\n\n      <td>&#x25cf; {{c}}</td>\n\n      <td class="managerDel"><button ion-button small color="secondary" class="delete" (click)="deleteComment(i)">X</button></td>\n\n    </tr>\n\n  </div>\n\n\n\n  <ion-item>\n\n    <ion-label>New comment :</ion-label>\n\n    <ion-input type="text" #newCom></ion-input>\n\n  </ion-item>\n\n\n\n  <ion-buttons end>\n\n    <button ion-button color="primary" (click)="sendComment(newCom)">Send comment</button>\n\n    <button ion-button color="primary" (click)="logout()">Logout</button>\n\n  </ion-buttons>\n\n\n\n  <!-- <ion-list>\n\n    <ion-item *ngFor="let a of accidents | slice:0:3">\n\n      <h2>{{a}}</h2>\n\n    </ion-item>\n\n  </ion-list> -->\n\n</ion-content>'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\homeManager\homeManager.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* App */]])
     ], ManagerPage);
@@ -614,7 +616,7 @@ var MyApp = (function () {
         });
     }
     MyApp = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\app\app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\app\app.html"*/
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\app\app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n\n'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\app\app.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]])
     ], MyApp);
@@ -649,7 +651,7 @@ var AboutPage = (function () {
     }
     AboutPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-about',template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\about\about.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      About\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n    <h2>Accident preventing app</h2>\n    <p>This app can help you to prevent accidents.</p>\n    <p>You will be informed when entering a zone where accidents have happened\n      in the past years, so just turn on the app and let it warn you when needed !</p>\n</ion-content>\n'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\about\about.html"*/
+            selector: 'page-about',template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\about\about.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>\n\n      About\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n    <h2>Accident preventing app</h2>\n\n    <p>This app can help you to prevent accidents.</p>\n\n    <p>You will be informed when entering a zone where accidents have happened\n\n      in the past years, so just turn on the app and let it warn you when needed !</p>\n\n</ion-content>\n\n'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\about\about.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]])
     ], AboutPage);
@@ -684,7 +686,7 @@ var ContactPage = (function () {
     }
     ContactPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-contact',template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\contact\contact.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      Contact\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-list-header>Follow us on Twitter</ion-list-header>\n    <ion-item>\n      <ion-icon name="ionic" item-start></ion-icon>\n      @ionicframework\n    </ion-item>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\contact\contact.html"*/
+            selector: 'page-contact',template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\contact\contact.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>\n\n      Contact\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content>\n\n  <ion-list>\n\n    <ion-list-header>Follow us on Twitter</ion-list-header>\n\n    <ion-item>\n\n      <ion-icon name="ionic" item-start></ion-icon>\n\n      @ionicframework\n\n    </ion-item>\n\n  </ion-list>\n\n</ion-content>\n\n'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\contact\contact.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]])
     ], ContactPage);
@@ -731,31 +733,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var RestProvider = (function () {
     function RestProvider(http) {
         this.http = http;
+        this.urlBase = 'http://localhost:8000';
         console.log('Hello RestProvider Provider');
     }
     RestProvider.prototype.getAccidents = function (coords) {
-        this.apiUrl1 = 'http://172.20.10.5:8000/getRouteByPosition?lat=' + coords[0] + '&lon=' + coords[1];
+        this.apiUrl1 = this.urlBase + '/getRouteByPosition?lat=' + coords[0] + '&lon=' + coords[1];
         console.log(this.apiUrl1);
         return this.http.get(this.apiUrl1)
             .map(this.extractData)
             .catch(this.handleError);
     };
     RestProvider.prototype.getComments = function (accId) {
-        this.apiUrl2 = 'http://172.20.10.5:8000/getCommentaryById?accidentId=' + accId;
+        this.apiUrl2 = this.urlBase + '/getCommentaryById?accidentId=' + accId;
         console.log(this.apiUrl2);
         return this.http.get(this.apiUrl2)
             .map(this.extractData)
             .catch(this.handleError);
     };
     RestProvider.prototype.addComment = function (accId, text, author) {
-        this.apiUrl3 = 'http://172.20.10.5:8000/addCommentary?text=' + text + '&accidentId=' + accId + '&auteur=' + author;
+        this.apiUrl3 = this.urlBase + '/addCommentary?text=' + text + '&accidentId=' + accId + '&auteur=' + author;
         console.log(this.apiUrl3);
         return this.http.get(this.apiUrl3)
             .map(this.extractData)
             .catch(this.handleError);
     };
     RestProvider.prototype.deleteComment = function (comId, accId) {
-        this.apiUrl4 = 'http://172.20.10.5:8000/deleteCommentary?id=' + comId + '&accidentId=' + accId;
+        this.apiUrl4 = this.urlBase + '/deleteCommentary?id=' + comId + '&accidentId=' + accId;
         console.log(this.apiUrl4);
         return this.http.delete(this.apiUrl4)
             .catch(this.handleError);

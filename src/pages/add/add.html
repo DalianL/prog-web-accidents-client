@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Add
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <h2>Enter accident information :</h2>
+
+    <form (ngSubmit)="submit()" #registerForm="ngForm">
+        <ion-item>
+          <ion-label fixed>Address</ion-label>
+          <ion-input type="text" name="address" [(ngModel)]="registerAccident.address" required></ion-input>
+        </ion-item>
+      
+        <ion-item>
+          <ion-label fixed>Department</ion-label>
+          <ion-input type="text" name="department" [(ngModel)]="registerAccident.department" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label fixed>Gravity</ion-label>
+          <ion-input type="text" name="gravity" [(ngModel)]="registerAccident.gravity" required></ion-input>
+        </ion-item>
+      
+        <button ion-button block color="primary" type="submit" [disabled]="!registerForm.form.valid">Submit</button>
+    </form>
+</ion-content>
