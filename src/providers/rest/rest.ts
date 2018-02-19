@@ -14,6 +14,7 @@ import 'rxjs/add/operator/map';
 export class RestProvider {
   coordinates: any;
 
+  private urlBase = 'http://localhost:8000';
   private apiUrl1;
   private apiUrl2;
   private apiUrl3;
@@ -24,7 +25,7 @@ export class RestProvider {
   }
 
   getAccidents(coords: any): Observable<string[]> {
-    this.apiUrl1 = 'http://localhost:8000/getRouteByPosition?lat=' + coords[0] + '&lon=' + coords[1];
+    this.apiUrl1 = this.urlBase + '/getRouteByPosition?lat=' + coords[0] + '&lon=' + coords[1];
     console.log(this.apiUrl1);
     return this.http.get(this.apiUrl1)
                     .map(this.extractData)
@@ -32,7 +33,7 @@ export class RestProvider {
   }
 
   getComments(accId: any): Observable<string[]> {
-    this.apiUrl2 = 'http://localhost:8000/getCommentaryById?accidentId=' + accId;
+    this.apiUrl2 = this.urlBase + '/getCommentaryById?accidentId=' + accId;
     console.log(this.apiUrl2);
     return this.http.get(this.apiUrl2)
                     .map(this.extractData)
@@ -40,7 +41,7 @@ export class RestProvider {
   }
 
   addComment(accId: any, text: any, author: any) {
-    this.apiUrl3 = 'http://localhost:8000/addCommentary?text=' + text + '&accidentId=' + accId + '&auteur=' + author;
+    this.apiUrl3 = this.urlBase + '/addCommentary?text=' + text + '&accidentId=' + accId + '&auteur=' + author;
     console.log(this.apiUrl3);
     return this.http.get(this.apiUrl3)
                     .map(this.extractData)
@@ -48,7 +49,7 @@ export class RestProvider {
   }
 
   deleteComment(comId: any, accId: any) {
-    this.apiUrl4 = 'http://localhost:8000/deleteCommentary?id=' + comId + '&accidentId=' + accId;
+    this.apiUrl4 = this.urlBase + '/deleteCommentary?id=' + comId + '&accidentId=' + accId;
     console.log(this.apiUrl4);
     return this.http.delete(this.apiUrl4)
                     .catch(this.handleError);

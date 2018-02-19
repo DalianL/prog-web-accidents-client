@@ -172,7 +172,7 @@ var HomePage = (function () {
         this.rest = rest;
         this.geolocation = geolocation;
         this.app = app;
-        this.timeoutValue = 3000;
+        this.checkInterval = 200;
     }
     HomePage.prototype.ionViewDidLoad = function () {
         this.infoWindows = [];
@@ -182,18 +182,20 @@ var HomePage = (function () {
     HomePage.prototype.loadMap = function () {
         var _this = this;
         this.geolocation.getCurrentPosition().then(function (position) {
-            // let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            // this.getAccidents([position.coords.latitude, position.coords.longitude]);
-            var latLng = new google.maps.LatLng(43.6157998, 7.0724383);
-            _this.getAccidents([43.6157998, 7.0724383]);
+            var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            // let latLng = new google.maps.LatLng(43.6157998, 7.0724383);
             var mapOptions = {
                 center: latLng,
                 zoom: 13,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             _this.map = new google.maps.Map(_this.mapElement.nativeElement, mapOptions);
-            setTimeout(function () {
+            _this.getAccidents([position.coords.latitude, position.coords.longitude]);
+            // this.getAccidents([43.6157998, 7.0724383]);
+            var interval1 = setInterval(function () {
                 if (_this.accidents != undefined) {
+                    // console.log("Accidents loaded");
+                    clearInterval(interval1);
                     _this.accidents.result.forEach(function (element) {
                         var markerCoords = {
                             lat: parseFloat(element.lat),
@@ -215,21 +217,20 @@ var HomePage = (function () {
                             });
                             infowindow.open(_this.map, marker);
                             _this.getComments(element.accidentId);
-                            setTimeout(function () {
+                            var interval2 = setInterval(function () {
                                 if (_this.comments != undefined) {
+                                    // console.log("Comments loaded");
+                                    clearInterval(interval2);
                                     _this.comments.result.forEach(function (element) {
                                         _this.commentsArray.push(element.text);
                                     });
                                 }
-                            }, _this.timeoutValue);
+                            }, _this.checkInterval);
                         });
                         marker.setMap(_this.map);
                     });
                 }
-                else {
-                    console.log('Accidents were not found quick enough');
-                }
-            }, _this.timeoutValue);
+            }, _this.checkInterval);
         }, function (err) {
             console.log(err);
         });
@@ -266,15 +267,16 @@ var HomePage = (function () {
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])('map'),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */])
+        __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */]) === "function" && _a || Object)
     ], HomePage.prototype, "mapElement", void 0);
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-home',template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\home\home.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>Accidents around you :</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n  <div #map id="map"></div> \n\n\n\n  <h6>Comment list</h6>\n\n\n\n  <div id="comments">\n\n    <tr *ngFor="let c of commentsArray">\n\n      <td>&#x25cf; {{c}}</td>\n\n    </tr>\n\n  </div>\n\n\n\n  <ion-item>\n\n    <ion-label>New comment :</ion-label>\n\n    <ion-input type="text" #newCom></ion-input>\n\n  </ion-item>\n\n\n\n  <ion-buttons end>\n\n    <button ion-button color="primary" (click)="sendComment(newCom)">Send comment</button>\n\n    <button ion-button color="primary" (click)="logout()">Logout</button>\n\n  </ion-buttons>\n\n\n\n  <!-- <ion-list>\n\n    <ion-item *ngFor="let a of accidents | slice:0:3">\n\n      <h2>{{a}}</h2>\n\n    </ion-item>\n\n  </ion-list> -->\n\n</ion-content>'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\home\home.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* App */]])
+        __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* App */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* App */]) === "function" && _e || Object])
     ], HomePage);
     return HomePage;
+    var _a, _b, _c, _d, _e;
 }());
 
 //# sourceMappingURL=home.js.map
@@ -349,7 +351,7 @@ var ManagerPage = (function () {
         this.rest = rest;
         this.geolocation = geolocation;
         this.app = app;
-        this.timeoutValue = 3000;
+        this.checkInterval = 200;
     }
     ManagerPage.prototype.ionViewDidLoad = function () {
         this.infoWindows = [];
@@ -359,18 +361,20 @@ var ManagerPage = (function () {
     ManagerPage.prototype.loadMap = function () {
         var _this = this;
         this.geolocation.getCurrentPosition().then(function (position) {
-            // let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            // this.getAccidents([position.coords.latitude, position.coords.longitude]);
-            var latLng = new google.maps.LatLng(43.6157998, 7.0724383);
-            _this.getAccidents([43.6157998, 7.0724383]);
+            var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            // let latLng = new google.maps.LatLng(43.6157998, 7.0724383);
             var mapOptions = {
                 center: latLng,
                 zoom: 13,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             _this.map = new google.maps.Map(_this.mapElement.nativeElement, mapOptions);
-            setTimeout(function () {
+            _this.getAccidents([position.coords.latitude, position.coords.longitude]);
+            // this.getAccidents([43.6157998, 7.0724383]);
+            var interval1 = setInterval(function () {
                 if (_this.accidents != undefined) {
+                    console.log("Accidents loaded");
+                    clearInterval(interval1);
                     _this.accidents.result.forEach(function (element) {
                         var markerCoords = {
                             lat: parseFloat(element.lat),
@@ -393,22 +397,21 @@ var ManagerPage = (function () {
                             });
                             infowindow.open(_this.map, marker);
                             _this.getComments(element.accidentId);
-                            setTimeout(function () {
+                            var interval2 = setInterval(function () {
                                 if (_this.comments != undefined) {
+                                    // console.log("Comments loaded");
+                                    clearInterval(interval2);
                                     _this.comments.result.forEach(function (element) {
-                                        _this.commentsId.push(element._id);
                                         _this.commentsArray.push(element.text);
+                                        _this.commentsId.push(element._id);
                                     });
                                 }
-                            }, _this.timeoutValue);
+                            }, _this.checkInterval);
                         });
                         marker.setMap(_this.map);
                     });
                 }
-                else {
-                    console.log('Accidents were not found quick enough');
-                }
-            }, _this.timeoutValue);
+            }, _this.checkInterval);
         }, function (err) {
             console.log(err);
         });
@@ -453,15 +456,16 @@ var ManagerPage = (function () {
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])('map'),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */])
+        __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */]) === "function" && _a || Object)
     ], ManagerPage.prototype, "mapElement", void 0);
     ManagerPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-manager',template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\homeManager\homeManager.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>Manage the accidents :</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <div #map id="map"></div> \n\n  <h6>Comment list</h6>\n\n  <div id="comments">\n    <tr *ngFor="let c of commentsArray; let i = index">\n      <td>&#x25cf; {{c}}</td>\n      <td class="managerDel"><button ion-button small color="secondary" class="delete" (click)="deleteComment(i)">X</button></td>\n    </tr>\n  </div>\n\n  <ion-item>\n    <ion-label>New comment :</ion-label>\n    <ion-input type="text" #newCom></ion-input>\n  </ion-item>\n\n  <ion-buttons end>\n    <button ion-button color="primary" (click)="sendComment(newCom)">Send comment</button>\n    <button ion-button color="primary" (click)="logout()">Logout</button>\n  </ion-buttons>\n\n  <!-- <ion-list>\n    <ion-item *ngFor="let a of accidents | slice:0:3">\n      <h2>{{a}}</h2>\n    </ion-item>\n  </ion-list> -->\n</ion-content>'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\homeManager\homeManager.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* App */]])
+        __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* App */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* App */]) === "function" && _e || Object])
     ], ManagerPage);
     return ManagerPage;
+    var _a, _b, _c, _d, _e;
 }());
 
 //# sourceMappingURL=homeManager.js.map
@@ -731,31 +735,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var RestProvider = (function () {
     function RestProvider(http) {
         this.http = http;
+        this.urlBase = 'http://localhost:8000';
         console.log('Hello RestProvider Provider');
     }
     RestProvider.prototype.getAccidents = function (coords) {
-        this.apiUrl1 = 'http://localhost:8000/getRouteByPosition?lat=' + coords[0] + '&lon=' + coords[1];
+        this.apiUrl1 = this.urlBase + '/getRouteByPosition?lat=' + coords[0] + '&lon=' + coords[1];
         console.log(this.apiUrl1);
         return this.http.get(this.apiUrl1)
             .map(this.extractData)
             .catch(this.handleError);
     };
     RestProvider.prototype.getComments = function (accId) {
-        this.apiUrl2 = 'http://localhost:8000/getCommentaryById?accidentId=' + accId;
+        this.apiUrl2 = this.urlBase + '/getCommentaryById?accidentId=' + accId;
         console.log(this.apiUrl2);
         return this.http.get(this.apiUrl2)
             .map(this.extractData)
             .catch(this.handleError);
     };
     RestProvider.prototype.addComment = function (accId, text, author) {
-        this.apiUrl3 = 'http://localhost:8000/addCommentary?text=' + text + '&accidentId=' + accId + '&auteur=' + author;
+        this.apiUrl3 = this.urlBase + '/addCommentary?text=' + text + '&accidentId=' + accId + '&auteur=' + author;
         console.log(this.apiUrl3);
         return this.http.get(this.apiUrl3)
             .map(this.extractData)
             .catch(this.handleError);
     };
     RestProvider.prototype.deleteComment = function (comId, accId) {
-        this.apiUrl4 = 'http://localhost:8000/deleteCommentary?id=' + comId + '&accidentId=' + accId;
+        this.apiUrl4 = this.urlBase + '/deleteCommentary?id=' + comId + '&accidentId=' + accId;
         console.log(this.apiUrl4);
         return this.http.delete(this.apiUrl4)
             .catch(this.handleError);
@@ -777,9 +782,10 @@ var RestProvider = (function () {
     };
     RestProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]) === "function" && _a || Object])
     ], RestProvider);
     return RestProvider;
+    var _a;
 }());
 
 //# sourceMappingURL=rest.js.map

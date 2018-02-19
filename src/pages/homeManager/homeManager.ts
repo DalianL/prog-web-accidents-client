@@ -22,7 +22,7 @@ export class ManagerPage {
   commentsArray: any[];
   commentsId: any[];
   errorMessage: string;
-  timeoutValue: number = 3000;
+  checkInterval: number = 200;
 
   constructor(public navCtrl: NavController, public rest: RestProvider, public geolocation: Geolocation, public app: App) {
 
@@ -38,10 +38,8 @@ export class ManagerPage {
  
     this.geolocation.getCurrentPosition().then((position) => {
  
-      // let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-      // this.getAccidents([position.coords.latitude, position.coords.longitude]);
-      let latLng = new google.maps.LatLng(43.6157998, 7.0724383);
-      this.getAccidents([43.6157998, 7.0724383]);
+      let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      // let latLng = new google.maps.LatLng(43.6157998, 7.0724383);
  
       let mapOptions = {
         center: latLng,
@@ -51,8 +49,14 @@ export class ManagerPage {
  
       this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
 
-      setTimeout(() => {
+      this.getAccidents([position.coords.latitude, position.coords.longitude]);
+      // this.getAccidents([43.6157998, 7.0724383]);
+
+      const interval1 = setInterval(() => {
         if (this.accidents != undefined) {
+          console.log("Accidents loaded");
+          clearInterval(interval1);
+
           this.accidents.result.forEach(element => {
             let markerCoords = {
               lat: parseFloat(element.lat),
@@ -72,7 +76,7 @@ export class ManagerPage {
   
             marker.addListener('click', () => {
               this.selectedAccidentID = element.accidentId;
-              this.commentsArray = [];              
+              this.commentsArray = [];
               this.commentsId = [];
               this.infoWindows.forEach(window => {
                 window.close();
@@ -80,28 +84,26 @@ export class ManagerPage {
               infowindow.open(this.map, marker);
               this.getComments(element.accidentId);
 
-              setTimeout(() => {
+              const interval2 = setInterval(() => {
                 if (this.comments != undefined) {
+                  // console.log("Comments loaded");
+                  clearInterval(interval2);
                   this.comments.result.forEach(element => {
-                    this.commentsId.push(element._id);
                     this.commentsArray.push(element.text);
+                    this.commentsId.push(element._id);
                   });
                 }
-              }, this.timeoutValue);
+              }, this.checkInterval);
             });
   
             marker.setMap(this.map);
             
           });
-        } else {
-          console.log('Accidents were not found quick enough');
         }
-      }, this.timeoutValue);
- 
+      }, this.checkInterval);
     }, (err) => {
       console.log(err);
     });
- 
   }
 
   sendComment(newCom: any) {
