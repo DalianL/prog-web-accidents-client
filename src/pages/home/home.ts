@@ -54,7 +54,7 @@ export class HomePage {
       const interval1 = setInterval(() => {
         if (this.accidents != undefined) {
           // console.log("Accidents loaded");
-          alert("ACCIDENT ZONE DETECTED\nBe careful !");
+          // alert("ACCIDENT ZONE DETECTED\nBe careful !");
           clearInterval(interval1);
 
           this.accidents.result.forEach(element => {
