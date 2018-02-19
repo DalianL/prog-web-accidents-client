@@ -221,7 +221,7 @@ var HomePage = (function () {
             // let latLng = new google.maps.LatLng(43.6157998, 7.0724383);
             var mapOptions = {
                 center: latLng,
-                zoom: 13,
+                zoom: 14,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             _this.map = new google.maps.Map(_this.mapElement.nativeElement, mapOptions);
@@ -382,7 +382,32 @@ var AddPage = (function () {
         this.registerAccident = { address: '', department: '', gravity: '' };
     }
     AddPage.prototype.submit = function () {
-        console.log('Submiting : ', this.registerAccident.address, this.registerAccident.department, this.registerAccident.gravity);
+        var _this = this;
+        var geocoder = new google.maps.Geocoder();
+        var addressToCode = this.registerAccident.address + ' ' + this.registerAccident.department;
+        geocoder.geocode({ 'address': addressToCode }, function (results, status) {
+            if (status === 'OK') {
+                var addressToSend = _this.registerAccident.address;
+                var departmentToSend = _this.registerAccident.department.substring(0, 2);
+                if (departmentToSend[0] == "0") {
+                    departmentToSend = departmentToSend.substring(1, 2);
+                }
+                var coordToSend = {
+                    lat: results[0].geometry.location.lat(),
+                    lng: results[0].geometry.location.lng()
+                };
+                _this.addComment();
+            }
+            else {
+                console.log('Invalid address');
+            }
+        });
+    };
+    AddPage.prototype.addComment = function () {
+        // this.rest.addComment(accId, text, author)
+        //   .subscribe(
+        //   updatedComments => this.updatedComments = updatedComments,
+        //   error => this.errorMessage = <any>error);
     };
     AddPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
@@ -440,7 +465,7 @@ var ManagerPage = (function () {
             // let latLng = new google.maps.LatLng(43.6157998, 7.0724383);
             var mapOptions = {
                 center: latLng,
-                zoom: 13,
+                zoom: 14,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             _this.map = new google.maps.Map(_this.mapElement.nativeElement, mapOptions);

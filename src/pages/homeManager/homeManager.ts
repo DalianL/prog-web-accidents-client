@@ -43,7 +43,7 @@ export class ManagerPage {
  
       let mapOptions = {
         center: latLng,
-        zoom: 13,
+        zoom: 14,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       }
  
