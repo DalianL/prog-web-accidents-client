@@ -159,17 +159,16 @@ export class ManagerPage {
   }
 
   deleteAccident() {
-    this.rest.deleteAccident(this.selectedAccidentID)
-    .subscribe(
-      accidents => this.updatedAccidents = accidents,
-      error => this.errorMessage = <any>error);
-    for (let i = 0; i < this.accidents.result; i++) {
+    for (let i = 0; i < this.accidents.result.length; i++) {
       if (this.accidents.result[i].accidentId == this.selectedAccidentID) {
-        console.log(this.accidents.result[i]);
         this.accidents.result.splice(i, 1);
         break;
       }
     }
+    this.rest.deleteAccident(this.selectedAccidentID)
+    .subscribe(
+      accidents => this.updatedAccidents = accidents,
+      error => this.errorMessage = <any>error);
   }
 
   getAccidents(coords: any) {

@@ -81,6 +81,7 @@ export class AddPage {
         add.clearTextInput();
         dep.clearTextInput();
         grav.clearTextInput();
+        this.correctAddress = false;
       }
     }, 2000);
   }
