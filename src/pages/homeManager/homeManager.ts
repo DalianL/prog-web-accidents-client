@@ -16,6 +16,7 @@ export class ManagerPage {
   infoWindows: any[];
   coordinates: any;
   accidents: any;
+  updatedAccidents: any;
   selectedAccidentID: any;
   comments: any;
   updatedComments: any;
@@ -24,6 +25,7 @@ export class ManagerPage {
   errorMessage: string;
   warned: any;
   checkInterval: number = 200;
+  loadTimeoutId: any;
 
   constructor(public navCtrl: NavController, public rest: RestProvider, public geolocation: Geolocation, public app: App) {
 
@@ -130,6 +132,11 @@ export class ManagerPage {
         });
       }
     }, this.checkInterval);
+
+    this.loadTimeoutId = setTimeout(() => {
+      this.loadAccidents(latPos, lngPos);
+    }, 10000);
+
   }
 
   sendComment(newCom: any) {
@@ -148,7 +155,21 @@ export class ManagerPage {
     this.rest.deleteComment(idToRemove, this.selectedAccidentID)
     .subscribe(
       updatedComments => this.updatedComments = updatedComments,
-      error => this.errorMessage = <any>error);;
+      error => this.errorMessage = <any>error);
+  }
+
+  deleteAccident() {
+    this.rest.deleteAccident(this.selectedAccidentID)
+    .subscribe(
+      accidents => this.updatedAccidents = accidents,
+      error => this.errorMessage = <any>error);
+    for (let i = 0; i < this.accidents.result; i++) {
+      if (this.accidents.result[i].accidentId == this.selectedAccidentID) {
+        console.log(this.accidents.result[i]);
+        this.accidents.result.splice(i, 1);
+        break;
+      }
+    }
   }
 
   getAccidents(coords: any) {
@@ -173,7 +194,8 @@ export class ManagerPage {
   }
 
   logout() {
-    //Api Token Logout 
+    clearTimeout(this.loadTimeoutId);
+    // Api Token Logout 
     const root = this.app.getRootNav();
     root.popToRoot();
   }

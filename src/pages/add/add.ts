@@ -12,12 +12,14 @@ export class AddPage {
   registerAccident = { address: '', department: '', gravity: '' };
   errorMessage: string;
   result: any;
+  correctAddress: boolean = false;
 
   constructor(public navCtrl: NavController, public rest: RestProvider) {
 
   }
 
   submit() {
+    let elem = <HTMLElement>document.querySelector(".feedback");
     var geocoder = new google.maps.Geocoder();
     const addressToCode = this.registerAccident.address + ' ' + this.registerAccident.department;
     if (this.registerAccident.address != '' && this.registerAccident.department != '' && this.registerAccident.gravity != '') {
@@ -27,6 +29,8 @@ export class AddPage {
         if (/^\d+$/.test(this.registerAccident.department.split(' ')[0])) {
           geocoder.geocode({'address': addressToCode}, (results, status) => {
             if (status === 'OK') {
+              this.correctAddress = true;
+
               const addressToSend = this.registerAccident.address;
               let departmentToSend = this.registerAccident.department.substring(0,2);
               if (departmentToSend[0] == "0") {
@@ -38,25 +42,30 @@ export class AddPage {
               }
 
               this.addAccident(addressToSend, departmentToSend, coordToSend, this.registerAccident.gravity);
-    
-              let elem = <HTMLElement>document.querySelector(".feedback");
+              
+              elem.innerHTML = "Accident added !";
               elem.style.display = 'block';
-              setTimeout(() => {
-                elem.style.display = 'none';
-              }, 2000);
             } else {
-              console.log('Geocode did not function properly');
+              elem.innerHTML = "Geocode did not function properly";
+              elem.style.display = 'block';
             }
           });
         } else {
-          console.log('Invalid department');  
+          elem.innerHTML = "Invalid department";
+          elem.style.display = 'block';
         }
       } else {
-        console.log('Invalid address');
+        elem.innerHTML = "Invalid address";
+        elem.style.display = 'block';
       }
     } else {
-      console.log('Missing fields');
+      elem.innerHTML = "Missing fields";
+      elem.style.display = 'block';
     }
+
+    setTimeout(() => {
+      elem.style.display = 'none';
+    }, 2000);
   }
 
   addAccident(add: any, dep: any, coord: any, grav: any) {
@@ -68,9 +77,11 @@ export class AddPage {
 
   emptyFields(add: any, dep: any, grav: any) {
     setTimeout(() => {
-      add.clearTextInput();
-      dep.clearTextInput();
-      grav.clearTextInput();
+      if (this.correctAddress) {
+        add.clearTextInput();
+        dep.clearTextInput();
+        grav.clearTextInput();
+      }
     }, 2000);
   }
 }

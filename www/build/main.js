@@ -294,7 +294,7 @@ var HomePage = (function () {
                 });
             }
         }, this.checkInterval);
-        setTimeout(function () {
+        this.loadTimeoutId = setTimeout(function () {
             _this.loadAccidents(latPos, lngPos);
         }, 10000);
     };
@@ -324,21 +324,23 @@ var HomePage = (function () {
             .subscribe(function (updatedComments) { return _this.updatedComments = updatedComments; }, function (error) { return _this.errorMessage = error; });
     };
     HomePage.prototype.logout = function () {
-        //Api Token Logout 
+        clearTimeout(this.loadTimeoutId);
+        // Api Token Logout 
         var root = this.app.getRootNav();
         root.popToRoot();
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])('map'),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */])
+        __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */]) === "function" && _a || Object)
     ], HomePage.prototype, "mapElement", void 0);
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\home\home.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>Accidents around you :</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n  <div #map id="map"></div> \n\n\n\n  <h6 class="accDefined">Comment list</h6>\n\n\n\n  <div id="comments">\n\n    <tr *ngFor="let c of commentsArray">\n\n      <td>&#x25cf; {{c}}</td>\n\n    </tr>\n\n  </div>\n\n\n\n  <ion-item class="accDefined">\n\n    <ion-label>New comment :</ion-label>\n\n    <ion-input type="text" #newCom></ion-input>\n\n  </ion-item>\n\n\n\n  <ion-buttons class="accDefined" end>\n\n    <button ion-button color="primary" (click)="sendComment(newCom)">Send comment</button>\n\n  </ion-buttons>\n\n  <ion-buttons class="bottom" end>\n\n    <button ion-button color="primary" (click)="logout()">Logout</button>\n\n  </ion-buttons>\n\n\n\n</ion-content>'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\home\home.html"*/
+            selector: 'page-home',template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\home\home.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>Accidents around you :</ion-title>\n\n    <ion-buttons class="logout" end>\n\n      <button small ion-button color="primary" (click)="logout()">Logout</button>\n\n    </ion-buttons>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n  <div #map id="map"></div> \n\n\n\n  <h6 class="accDefined">Comment list</h6>\n\n\n\n  <div id="comments">\n\n    <tr *ngFor="let c of commentsArray">\n\n      <td>&#x25cf; {{c}}</td>\n\n    </tr>\n\n  </div>\n\n\n\n  <ion-item class="accDefined">\n\n    <ion-label>New comment :</ion-label>\n\n    <ion-input type="text" #newCom></ion-input>\n\n  </ion-item>\n\n\n\n  <ion-buttons class="accDefined" end>\n\n    <button ion-button color="primary" (click)="sendComment(newCom)">Send comment</button>\n\n  </ion-buttons>\n\n\n\n</ion-content>'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\home\home.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */], __WEBPACK_IMPORTED_MODULE_4__ionic_native_toast__["a" /* Toast */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* App */]])
+        __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__ionic_native_toast__["a" /* Toast */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__ionic_native_toast__["a" /* Toast */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* App */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* App */]) === "function" && _f || Object])
     ], HomePage);
     return HomePage;
+    var _a, _b, _c, _d, _e, _f;
 }());
 
 //# sourceMappingURL=home.js.map
@@ -410,9 +412,11 @@ var AddPage = (function () {
         this.navCtrl = navCtrl;
         this.rest = rest;
         this.registerAccident = { address: '', department: '', gravity: '' };
+        this.correctAddress = false;
     }
     AddPage.prototype.submit = function () {
         var _this = this;
+        var elem = document.querySelector(".feedback");
         var geocoder = new google.maps.Geocoder();
         var addressToCode = this.registerAccident.address + ' ' + this.registerAccident.department;
         if (this.registerAccident.address != '' && this.registerAccident.department != '' && this.registerAccident.gravity != '') {
@@ -422,6 +426,7 @@ var AddPage = (function () {
                 if (/^\d+$/.test(this.registerAccident.department.split(' ')[0])) {
                     geocoder.geocode({ 'address': addressToCode }, function (results, status) {
                         if (status === 'OK') {
+                            _this.correctAddress = true;
                             var addressToSend = _this.registerAccident.address;
                             var departmentToSend = _this.registerAccident.department.substring(0, 2);
                             if (departmentToSend[0] == "0") {
@@ -432,28 +437,32 @@ var AddPage = (function () {
                                 lng: results[0].geometry.location.lng()
                             };
                             _this.addAccident(addressToSend, departmentToSend, coordToSend, _this.registerAccident.gravity);
-                            var elem_1 = document.querySelector(".feedback");
-                            elem_1.style.display = 'block';
-                            setTimeout(function () {
-                                elem_1.style.display = 'none';
-                            }, 2000);
+                            elem.innerHTML = "Accident added !";
+                            elem.style.display = 'block';
                         }
                         else {
-                            console.log('Geocode did not function properly');
+                            elem.innerHTML = "Geocode did not function properly";
+                            elem.style.display = 'block';
                         }
                     });
                 }
                 else {
-                    console.log('Invalid department');
+                    elem.innerHTML = "Invalid department";
+                    elem.style.display = 'block';
                 }
             }
             else {
-                console.log('Invalid address');
+                elem.innerHTML = "Invalid address";
+                elem.style.display = 'block';
             }
         }
         else {
-            console.log('Missing fields');
+            elem.innerHTML = "Missing fields";
+            elem.style.display = 'block';
         }
+        setTimeout(function () {
+            elem.style.display = 'none';
+        }, 2000);
     };
     AddPage.prototype.addAccident = function (add, dep, coord, grav) {
         var _this = this;
@@ -461,20 +470,22 @@ var AddPage = (function () {
             .subscribe(function (result) { return _this.result = result; }, function (error) { return _this.errorMessage = error; });
     };
     AddPage.prototype.emptyFields = function (add, dep, grav) {
+        var _this = this;
         setTimeout(function () {
-            add.clearTextInput();
-            dep.clearTextInput();
-            grav.clearTextInput();
+            if (_this.correctAddress) {
+                add.clearTextInput();
+                dep.clearTextInput();
+                grav.clearTextInput();
+            }
         }, 2000);
     };
     AddPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-add',template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\add\add.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>\n\n      Add\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n    <h2>Enter accident info :</h2>\n\n\n\n    <form (ngSubmit)="submit()" #registerForm="ngForm">\n\n        <ion-item>\n\n          <ion-label fixed>Address</ion-label>\n\n          <ion-input type="text" name="address" [(ngModel)]="registerAccident.address" #newAdd required></ion-input>\n\n        </ion-item>\n\n      \n\n        <ion-item>\n\n          <ion-label fixed>Department</ion-label>\n\n          <ion-input type="text" name="department" [(ngModel)]="registerAccident.department" #newDep required></ion-input>\n\n        </ion-item>\n\n\n\n        <ion-item>\n\n          <ion-label fixed>Gravity</ion-label>\n\n          <ion-input type="text" name="gravity" [(ngModel)]="registerAccident.gravity" #newGrav required></ion-input>\n\n        </ion-item>\n\n      \n\n        <button ion-button block color="primary" type="submit" [disabled]="!registerForm.form.valid" (click)="emptyFields(newAdd, newDep, newGrav)">Submit</button>\n\n\n\n        <p class="feedback">Accident added !</p>\n\n    </form>\n\n</ion-content>\n\n'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\add\add.html"*/
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */]) === "function" && _b || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */]])
     ], AddPage);
     return AddPage;
-    var _a, _b;
 }());
 
 //# sourceMappingURL=add.js.map
@@ -595,6 +606,9 @@ var ManagerPage = (function () {
                 });
             }
         }, this.checkInterval);
+        this.loadTimeoutId = setTimeout(function () {
+            _this.loadAccidents(latPos, lngPos);
+        }, 10000);
     };
     ManagerPage.prototype.sendComment = function (newCom) {
         if (newCom.value != '' && this.selectedAccidentID != undefined) {
@@ -612,7 +626,18 @@ var ManagerPage = (function () {
         this.commentsArray.splice(index, 1);
         this.rest.deleteComment(idToRemove, this.selectedAccidentID)
             .subscribe(function (updatedComments) { return _this.updatedComments = updatedComments; }, function (error) { return _this.errorMessage = error; });
-        ;
+    };
+    ManagerPage.prototype.deleteAccident = function () {
+        var _this = this;
+        this.rest.deleteAccident(this.selectedAccidentID)
+            .subscribe(function (accidents) { return _this.updatedAccidents = accidents; }, function (error) { return _this.errorMessage = error; });
+        for (var i = 0; i < this.accidents.result; i++) {
+            if (this.accidents.result[i].accidentId == this.selectedAccidentID) {
+                console.log(this.accidents.result[i]);
+                this.accidents.result.splice(i, 1);
+                break;
+            }
+        }
     };
     ManagerPage.prototype.getAccidents = function (coords) {
         var _this = this;
@@ -630,21 +655,23 @@ var ManagerPage = (function () {
             .subscribe(function (updatedComments) { return _this.updatedComments = updatedComments; }, function (error) { return _this.errorMessage = error; });
     };
     ManagerPage.prototype.logout = function () {
-        //Api Token Logout 
+        clearTimeout(this.loadTimeoutId);
+        // Api Token Logout 
         var root = this.app.getRootNav();
         root.popToRoot();
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])('map'),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */])
+        __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */]) === "function" && _a || Object)
     ], ManagerPage.prototype, "mapElement", void 0);
     ManagerPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-manager',template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\homeManager\homeManager.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>Manage the accidents :</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n  <div #map id="map"></div> \n\n\n\n  <h6 class="accDefined">Comment list</h6>\n\n\n\n  <div id="comments">\n\n    <tr *ngFor="let c of commentsArray; let i = index">\n\n      <td>&#x25cf; {{c}}</td>\n\n      <td class="managerDel"><button ion-button small color="secondary" class="delete" (click)="deleteComment(i)">X</button></td>\n\n    </tr>\n\n  </div>\n\n\n\n  <ion-item class="accDefined">\n\n    <ion-label>New comment :</ion-label>\n\n    <ion-input type="text" #newCom></ion-input>\n\n  </ion-item>\n\n\n\n  <ion-buttons class="accDefined" end>\n\n    <button ion-button color="primary" (click)="sendComment(newCom)">Send comment</button>\n\n  </ion-buttons>\n\n  <!-- <ion-buttons class="accDefined" end>\n\n    <button ion-button color="primary" (click)="deleteAccident(newCom)">Delete accident</button>\n\n  </ion-buttons> -->\n\n  <ion-buttons class="bottom" end>\n\n    <button ion-button color="primary" (click)="logout()">Logout</button>\n\n  </ion-buttons>\n\n\n\n</ion-content>'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\homeManager\homeManager.html"*/
+            selector: 'page-manager',template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\homeManager\homeManager.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>Manage the accidents :</ion-title>\n\n    <ion-buttons class="logout" end>\n\n      <button small ion-button color="primary" (click)="logout()">Logout</button>\n\n    </ion-buttons>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n  <div #map id="map"></div> \n\n\n\n  <h6 class="accDefined">Comment list</h6>\n\n\n\n  <div id="comments">\n\n    <tr *ngFor="let c of commentsArray; let i = index">\n\n      <td>&#x25cf; {{c}}</td>\n\n      <td class="managerDel"><button ion-button small color="secondary" class="delete" (click)="deleteComment(i)">X</button></td>\n\n    </tr>\n\n  </div>\n\n\n\n  <ion-item class="accDefined">\n\n    <ion-label>New comment :</ion-label>\n\n    <ion-input type="text" #newCom></ion-input>\n\n  </ion-item>\n\n\n\n  <ion-buttons class="accDefined" end>\n\n    <button ion-button color="primary" (click)="sendComment(newCom)">Send comment</button>\n\n  </ion-buttons>\n\n  <ion-buttons class="accDefined" end>\n\n    <button ion-button color="primary" (click)="deleteAccident()">Delete accident</button>\n\n  </ion-buttons>\n\n</ion-content>'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\homeManager\homeManager.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* App */]])
+        __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* App */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* App */]) === "function" && _e || Object])
     ], ManagerPage);
     return ManagerPage;
+    var _a, _b, _c, _d, _e;
 }());
 
 //# sourceMappingURL=homeManager.js.map
@@ -888,6 +915,12 @@ var RestProvider = (function () {
         return this.http.delete(this.apiUrl5)
             .catch(this.handleError);
     };
+    RestProvider.prototype.deleteAccident = function (accId) {
+        this.apiUrl6 = this.urlBase + '/deleteAccident?accidentId=' + accId;
+        console.log(this.apiUrl6);
+        return this.http.delete(this.apiUrl6)
+            .catch(this.handleError);
+    };
     RestProvider.prototype.extractData = function (res) {
         return res;
     };
@@ -905,9 +938,10 @@ var RestProvider = (function () {
     };
     RestProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]) === "function" && _a || Object])
     ], RestProvider);
     return RestProvider;
+    var _a;
 }());
 
 //# sourceMappingURL=rest.js.map

@@ -18,9 +18,10 @@ page-manager {
     .accDefined {
         display: none;
     }
-
-    .bottom {
-        margin-top: 40px;
+    
+    .logout {
+        transform: scale(0.8);
+        background-color: rgb(223, 219, 219);
     }
 
     .delete {

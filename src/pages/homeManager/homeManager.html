@@ -1,6 +1,9 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Manage the accidents :</ion-title>
+    <ion-buttons class="logout" end>
+      <button small ion-button color="primary" (click)="logout()">Logout</button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -24,11 +27,7 @@
   <ion-buttons class="accDefined" end>
     <button ion-button color="primary" (click)="sendComment(newCom)">Send comment</button>
   </ion-buttons>
-  <!-- <ion-buttons class="accDefined" end>
-    <button ion-button color="primary" (click)="deleteAccident(newCom)">Delete accident</button>
-  </ion-buttons> -->
-  <ion-buttons class="bottom" end>
-    <button ion-button color="primary" (click)="logout()">Logout</button>
+  <ion-buttons class="accDefined" end>
+    <button ion-button color="primary" (click)="deleteAccident()">Delete accident</button>
   </ion-buttons>
-
 </ion-content>

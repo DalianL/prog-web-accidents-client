@@ -20,6 +20,7 @@ export class RestProvider {
   private apiUrl3;
   private apiUrl4;
   private apiUrl5;
+  private apiUrl6;
 
   constructor(public http: HttpClient) {
     console.log('Hello RestProvider Provider');
@@ -61,6 +62,13 @@ export class RestProvider {
     this.apiUrl5 = this.urlBase + '/deleteCommentary?id=' + comId + '&accidentId=' + accId;
     console.log(this.apiUrl5);
     return this.http.delete(this.apiUrl5)
+                    .catch(this.handleError);
+  }
+
+  deleteAccident(accId: any) {
+    this.apiUrl6 = this.urlBase + '/deleteAccident?accidentId=' + accId;
+    console.log(this.apiUrl6);
+    return this.http.delete(this.apiUrl6)
                     .catch(this.handleError);
   }
 

@@ -24,6 +24,7 @@ export class HomePage {
   errorMessage: string;
   warned: any;
   checkInterval: number = 200;
+  loadTimeoutId: any;
 
   constructor(public navCtrl: NavController, public rest: RestProvider, public geolocation: Geolocation, private toast: Toast, public app: App) {
 
@@ -129,7 +130,7 @@ export class HomePage {
       }
     }, this.checkInterval);
 
-    setTimeout(() => {
+    this.loadTimeoutId = setTimeout(() => {
       this.loadAccidents(latPos, lngPos);
     }, 10000);
 
@@ -167,7 +168,8 @@ export class HomePage {
   }
 
   logout() {
-    //Api Token Logout 
+    clearTimeout(this.loadTimeoutId);
+    // Api Token Logout 
     const root = this.app.getRootNav();
     root.popToRoot();
   }

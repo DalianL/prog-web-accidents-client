@@ -25710,6 +25710,12 @@ page-home .accDefined {
   display: none;
 }
 
+page-home .logout {
+  -webkit-transform: scale(0.8);
+  transform: scale(0.8);
+  background-color: #dfdbdb;
+}
+
 page-home .bottom {
   margin-top: 40px;
 }
@@ -25734,8 +25740,10 @@ page-manager .accDefined {
   display: none;
 }
 
-page-manager .bottom {
-  margin-top: 40px;
+page-manager .logout {
+  -webkit-transform: scale(0.8);
+  transform: scale(0.8);
+  background-color: #dfdbdb;
 }
 
 page-manager .delete {

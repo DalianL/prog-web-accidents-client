@@ -1,6 +1,9 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Accidents around you :</ion-title>
+    <ion-buttons class="logout" end>
+      <button small ion-button color="primary" (click)="logout()">Logout</button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -22,9 +25,6 @@
 
   <ion-buttons class="accDefined" end>
     <button ion-button color="primary" (click)="sendComment(newCom)">Send comment</button>
-  </ion-buttons>
-  <ion-buttons class="bottom" end>
-    <button ion-button color="primary" (click)="logout()">Logout</button>
   </ion-buttons>
 
 </ion-content>
