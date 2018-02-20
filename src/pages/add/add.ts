@@ -37,7 +37,7 @@ export class AddPage {
                 lng: results[0].geometry.location.lng()
               }
 
-              this.addComment(addressToSend, departmentToSend, coordToSend, this.registerAccident.gravity);
+              this.addAccident(addressToSend, departmentToSend, coordToSend, this.registerAccident.gravity);
     
               let elem = <HTMLElement>document.querySelector(".feedback");
               elem.style.display = 'block';
@@ -59,7 +59,7 @@ export class AddPage {
     }
   }
 
-  addComment(add: any, dep: any, coord: any, grav: any) {
+  addAccident(add: any, dep: any, coord: any, grav: any) {
     this.rest.addAccident(add, dep, coord, grav)
       .subscribe(
       result => this.result = result,

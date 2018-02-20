@@ -330,16 +330,15 @@ var HomePage = (function () {
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])('map'),
-        __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */]) === "function" && _a || Object)
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */])
     ], HomePage.prototype, "mapElement", void 0);
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-home',template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\home\home.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>Accidents around you :</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n  <div #map id="map"></div> \n\n\n\n  <h6 class="accDefined">Comment list</h6>\n\n\n\n  <div id="comments">\n\n    <tr *ngFor="let c of commentsArray">\n\n      <td>&#x25cf; {{c}}</td>\n\n    </tr>\n\n  </div>\n\n\n\n  <ion-item class="accDefined">\n\n    <ion-label>New comment :</ion-label>\n\n    <ion-input type="text" #newCom></ion-input>\n\n  </ion-item>\n\n\n\n  <ion-buttons class="accDefined" end>\n\n    <button ion-button color="primary" (click)="sendComment(newCom)">Send comment</button>\n\n  </ion-buttons>\n\n  <ion-buttons class="bottom" end>\n\n    <button ion-button color="primary" (click)="logout()">Logout</button>\n\n  </ion-buttons>\n\n\n\n</ion-content>'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\home\home.html"*/
         }),
-        __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__ionic_native_toast__["a" /* Toast */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__ionic_native_toast__["a" /* Toast */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* App */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* App */]) === "function" && _f || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */], __WEBPACK_IMPORTED_MODULE_4__ionic_native_toast__["a" /* Toast */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* App */]])
     ], HomePage);
     return HomePage;
-    var _a, _b, _c, _d, _e, _f;
 }());
 
 //# sourceMappingURL=home.js.map
@@ -432,7 +431,7 @@ var AddPage = (function () {
                                 lat: results[0].geometry.location.lat(),
                                 lng: results[0].geometry.location.lng()
                             };
-                            _this.addComment(addressToSend, departmentToSend, coordToSend, _this.registerAccident.gravity);
+                            _this.addAccident(addressToSend, departmentToSend, coordToSend, _this.registerAccident.gravity);
                             var elem_1 = document.querySelector(".feedback");
                             elem_1.style.display = 'block';
                             setTimeout(function () {
@@ -456,7 +455,7 @@ var AddPage = (function () {
             console.log('Missing fields');
         }
     };
-    AddPage.prototype.addComment = function (add, dep, coord, grav) {
+    AddPage.prototype.addAccident = function (add, dep, coord, grav) {
         var _this = this;
         this.rest.addAccident(add, dep, coord, grav)
             .subscribe(function (result) { return _this.result = result; }, function (error) { return _this.errorMessage = error; });
@@ -472,9 +471,10 @@ var AddPage = (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-add',template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\add\add.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>\n\n      Add\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n    <h2>Enter accident info :</h2>\n\n\n\n    <form (ngSubmit)="submit()" #registerForm="ngForm">\n\n        <ion-item>\n\n          <ion-label fixed>Address</ion-label>\n\n          <ion-input type="text" name="address" [(ngModel)]="registerAccident.address" #newAdd required></ion-input>\n\n        </ion-item>\n\n      \n\n        <ion-item>\n\n          <ion-label fixed>Department</ion-label>\n\n          <ion-input type="text" name="department" [(ngModel)]="registerAccident.department" #newDep required></ion-input>\n\n        </ion-item>\n\n\n\n        <ion-item>\n\n          <ion-label fixed>Gravity</ion-label>\n\n          <ion-input type="text" name="gravity" [(ngModel)]="registerAccident.gravity" #newGrav required></ion-input>\n\n        </ion-item>\n\n      \n\n        <button ion-button block color="primary" type="submit" [disabled]="!registerForm.form.valid" (click)="emptyFields(newAdd, newDep, newGrav)">Submit</button>\n\n\n\n        <p class="feedback">Accident added !</p>\n\n    </form>\n\n</ion-content>\n\n'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\add\add.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */]) === "function" && _b || Object])
     ], AddPage);
     return AddPage;
+    var _a, _b;
 }());
 
 //# sourceMappingURL=add.js.map
@@ -636,16 +636,15 @@ var ManagerPage = (function () {
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])('map'),
-        __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */]) === "function" && _a || Object)
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */])
     ], ManagerPage.prototype, "mapElement", void 0);
     ManagerPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-manager',template:/*ion-inline-start:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\homeManager\homeManager.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>Manage the accidents :</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n  <div #map id="map"></div> \n\n\n\n  <h6 class="accDefined">Comment list</h6>\n\n\n\n  <div id="comments">\n\n    <tr *ngFor="let c of commentsArray; let i = index">\n\n      <td>&#x25cf; {{c}}</td>\n\n      <td class="managerDel"><button ion-button small color="secondary" class="delete" (click)="deleteComment(i)">X</button></td>\n\n    </tr>\n\n  </div>\n\n\n\n  <ion-item class="accDefined">\n\n    <ion-label>New comment :</ion-label>\n\n    <ion-input type="text" #newCom></ion-input>\n\n  </ion-item>\n\n\n\n  <ion-buttons class="accDefined" end>\n\n    <button ion-button color="primary" (click)="sendComment(newCom)">Send comment</button>\n\n  </ion-buttons>\n\n  <!-- <ion-buttons class="accDefined" end>\n\n    <button ion-button color="primary" (click)="deleteAccident(newCom)">Delete accident</button>\n\n  </ion-buttons> -->\n\n  <ion-buttons class="bottom" end>\n\n    <button ion-button color="primary" (click)="logout()">Logout</button>\n\n  </ion-buttons>\n\n\n\n</ion-content>'/*ion-inline-end:"D:\FAC\M2\ProgServClient\Projet\Repo\Client\ionic-angular4-client\src\pages\homeManager\homeManager.html"*/
         }),
-        __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* App */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* App */]) === "function" && _e || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* App */]])
     ], ManagerPage);
     return ManagerPage;
-    var _a, _b, _c, _d, _e;
 }());
 
 //# sourceMappingURL=homeManager.js.map
