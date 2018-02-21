@@ -14,7 +14,7 @@ import 'rxjs/add/operator/map';
 export class RestProvider {
   coordinates: any;
 
-  private urlBase = 'http://localhost:8000';
+  private urlBase = 'http://172.20.10.5:8000';
   private apiUrl1;
   private apiUrl2;
   private apiUrl3;

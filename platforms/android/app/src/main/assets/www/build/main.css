@@ -25686,6 +25686,10 @@ page-add {
   text-align: center;
 }
 
+page-add .feedback {
+  display: none;
+}
+
 page-home .scroll {
   height: 100%;
 }
@@ -25702,6 +25706,20 @@ page-home td {
   padding-right: 15px;
 }
 
+page-home .accDefined {
+  display: none;
+}
+
+page-home .logout {
+  -webkit-transform: scale(0.8);
+  transform: scale(0.8);
+  background-color: #dfdbdb;
+}
+
+page-home .bottom {
+  margin-top: 40px;
+}
+
 page-manager .scroll {
   height: 100%;
 }
@@ -25716,6 +25734,16 @@ page-manager td {
   padding-bottom: 2px;
   padding-left: 15px;
   padding-right: 15px;
+}
+
+page-manager .accDefined {
+  display: none;
+}
+
+page-manager .logout {
+  -webkit-transform: scale(0.8);
+  transform: scale(0.8);
+  background-color: #dfdbdb;
 }
 
 page-manager .delete {

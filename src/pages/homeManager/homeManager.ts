@@ -2,6 +2,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, App } from 'ionic-angular';
 import { RestProvider } from '../../providers/rest/rest';
 import { Geolocation } from '@ionic-native/geolocation';
+import { Toast } from '@ionic-native/toast';
 
 declare var google;
 
@@ -27,7 +28,7 @@ export class ManagerPage {
   checkInterval: number = 200;
   loadTimeoutId: any;
 
-  constructor(public navCtrl: NavController, public rest: RestProvider, public geolocation: Geolocation, public app: App) {
+  constructor(public navCtrl: NavController, public rest: RestProvider, public geolocation: Geolocation, private toast: Toast, public app: App) {
 
   }
 
@@ -49,7 +50,7 @@ export class ManagerPage {
  
       let mapOptions = {
         center: latLng,
-        zoom: 15,
+        zoom: 14,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       }
  
@@ -70,11 +71,11 @@ export class ManagerPage {
       if (this.accidents != undefined) {
         if (this.warned == undefined) {
           if ((<any>window).cordova) {
-            // this.toast.show(`I'm a toast`, '5000', 'center').subscribe(
-            //   toast => {
-            //     console.log(toast);
-            //   }
-            // );
+            this.toast.show(`Entering accident zone\nBe careful !`, '3000', 'center').subscribe(
+              toast => {
+                console.log(toast);
+              }
+            );
           } else {
             alert("ACCIDENT ZONE DETECTED\nBe careful !");
           }

@@ -48,7 +48,7 @@ export class HomePage {
  
       let mapOptions = {
         center: latLng,
-        zoom: 15,
+        zoom: 14,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       }
  
@@ -69,11 +69,11 @@ export class HomePage {
       if (this.accidents != undefined) {
         if (this.warned == undefined) {
           if ((<any>window).cordova) {
-            // this.toast.show(`I'm a toast`, '5000', 'center').subscribe(
-            //   toast => {
-            //     console.log(toast);
-            //   }
-            // );
+            this.toast.show(`Entering accident zone\nBe careful !`, '3000', 'center').subscribe(
+              toast => {
+                console.log(toast);
+              }
+            );
           } else {
             alert("ACCIDENT ZONE DETECTED\nBe careful !");
           }
